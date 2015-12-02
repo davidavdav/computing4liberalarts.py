@@ -21,7 +21,7 @@ If you drop me a line with your gpg public key, I can add you to the `git-crypt 
 
 With this package in the search path, you can do a twitter search in Python, e.g., for `"ucu"`
 ```python
-from twitter import twitter
+import twitter
 result = twitter.search("ucu")
 
 import json
@@ -31,4 +31,5 @@ The `result` is a Python structure (from the twitter API json result) containing
 
 ## Python twitter API
 
-There are many.  It is very well possible that this can be done in just a few lines using a standard package.  However, I could not find anythong that could use the "application only authentication".  
+There are many.  It is very well possible that this can be done in just a few lines using a standard package.  However, I could not find anythong that could use the "application only authentication".
+

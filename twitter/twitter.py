@@ -67,5 +67,5 @@ def search(query):
     return json.loads(resp.read())
 
 if __name__ == "__main__":
-    print json.dumps(search("syria"), indent=4)
+    print json.dumps(search("beammen"), indent=4)
 

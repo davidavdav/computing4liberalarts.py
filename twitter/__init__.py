@@ -1,4 +1,4 @@
 #!/usr/bin/env python
 
-import secret
+from .twitter import search
 
