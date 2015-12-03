@@ -10,12 +10,22 @@ This is a Python package, in order to install clone this repository using `git` 
 ```sh
 git clone https://github.com/davidavdav/computing4liberalarts.py.git
 cd computing4liberalarts
-git-crypt unlock
 ```
 
-The last command is necessary to unlock an [encrypted file](twitter/secret.py) containing the credentials for accessing the twitter search API from an [application only authentication](https://dev.twitter.com/oauth/application-only) perspective. 
+## Unlocking the secret twitter key
 
-If you drop me a line with your gpg public key, I can add you to the `git-crypt unlock` users.  
+It is necessary to unlock an [encrypted file](twitter/secret.py) containing the credentials for accessing the twitter search API from an [application only authentication](https://dev.twitter.com/oauth/application-only) perspective.  You can do this my sending me your gpg public key.  Assuming you have created a gpg private/public key pair, you can extract the public key using:
+
+```sh
+gpg --armor --export _your-email_ > pubkey.txt
+```
+
+Then send the public key to me, and I can add you to the list of gpg users.  Then you should continue:
+
+```sh
+git pull origin master
+git-crypt unlock 
+```
 
 ## Using the search API
 
