@@ -34,7 +34,7 @@ def scan(file):
         d[r["id"]] = r
     return d
 
-
+## Test this
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("file")
