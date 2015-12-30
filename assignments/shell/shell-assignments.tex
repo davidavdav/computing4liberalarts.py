@@ -1,0 +1,123 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{fullpage} %% part of the preprint page
+\usepackage{url}
+\usepackage{exercise}
+\usepackage{graphicx}
+
+\renewcommand\ExerciseHeader{\par\medskip\noindent\textbf{\ExerciseName~\ExerciseHeaderNB} ---}
+
+\def\fig#1{Fig.~\ref{fig:#1}}
+\def\sec#1{Section~\ref{sec:#1}}
+\def\tab#1{Table~\ref{tab:#1}}
+\def\eq#1{(\ref{eq:#1})}
+\def\Eq#1{Equation~\eq{#1}}
+\def\ex#1{exercise~\ref{ex:#1}}
+
+%% make \_ math-mode dependent
+\let\underscore=\_
+\def\_{\checkmath_\underscaore}
+\def\checkmath#1#2{\ifmmode\def\next##1{#1{\rm##1}}\else\let\next=#2\fi\next}
+
+%% automatic math mode
+\def\math#1{\relax\ifmmode#1\else$#1$\fi}
+
+\catcode`\|=\active
+\def|#1|{\ifmmode\hbox{\texttt{#1}}\else\texttt{#1}\fi}
+\def\<#1>{\ifmmode \langle\hbox{\textrm{\textit{#1}}}\rangle\else$\langle\hbox{\textrm{\textit{#1}}}\rangle$\fi}
+
+\def\off{\catcode`\|=12}
+\def\on{\catcode`\|=\active}
+
+\title{Assignments for shell command: The ``UCU accent'' data.}
+\author{David van Leeuwen}
+\date{7 jan 2016}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+The University College Utrecht (UCU) Accents project is a longitudinal study in accent convergence and accomodation in speech amongst students of the UCU.  It involves the recording of speech from students at five different moments during their three-year undergraduate degree: at the very beginning in the first semester, and in the 2nd, 3rd, 4th and 6yh semester.  The UCU students originate from all over the world, but a significant fraction of about 60\,\% is Dutch.  The language spoken at the campus is English, both during and after classes.  
+The premisse of the project is that the students, during their stay at UCU, gradually change their accent towards a common `UCU-accent.'
+
+The data is recorded in sessions of about half an hour, and consists of a mix of various types of read texts and spontaneous speech elicited during interviews.  The recordings take place under supervision of a staff member or a student assistant.  With the recordings, metadata is generated.  The metadata and the sound recordings all need to form a consistent database.  The recorings are made according to a protocol, but some data have to be entered manually during the recording process.  Since this involves human actions, there is a certain level of unwanted variability in the way the data is stored on disc, due to small human errors, improvisation when dealing with technical errors and other unexpected events.
+
+In this assignment we're going to work with the original so-called ``aup-files'' of all recordings.  These files represent the metadata of the \emph{actual} sound recording (all eight microphone channels), but do not contain the audio data itself.  This limits the total size of the data, while not reducing the complexity of the issues involved.   
+
+\subsection{Preparation}
+
+We assume that you have access to a computing environment with the |bash| command shell, and access to a number of standard unix-commands.  Additionally, we assume you completed the tutorial in Codeacademy.  
+
+In the distributed data you will find a file |aup.tar.gz|, which contains all the UCU accent project |.aup| files.  Set the working directory to the place where this file is found, by issuing the right ``|cd |\<directory>'' commands, e.g., 
+\begin{verbatim}
+$ cd ucu
+$ ls
+aup.tar.gz
+\end{verbatim}
+Once you've found this file, you're at the right place.  Navigating without knowing where you are is hard, si I think that it helps to change the prompt (normally |\$|) to something including your `current working directory'.  
+\begin{verbatim}
+$ PS1="\w\$ "
+.../ucu$ 
+\end{verbatim}
+Here |.../ucu| represents `where you are' in the filesystem (in which folder, in modern ``everything is a picture'' parlance).  I can't really know where that is at the moment of writing this, hence the |...|.  In the following, however, I will keep representing the command line prompt by |\$|, despite the more informational prompt you have now. 
+
+Next, we're going to unpack the data.  The name of the file, ending in |.tar.gz|, suggests that it is a GNU-zip compressed (|.gz|) tape-archive (|.tar|). A tape-archive may sound archaic, ang guess what: it is.  But the idea of an archive is that it can contain multiple files in a single ``container'' file. 
+\begin{verbatim}
+$ tar zxvf aup.
+\end{verbatim}
+\dots now press the \<tab>-key.  If everything is right, the shell should \emph{complete} the command for you:
+\begin{verbatim}
+$ tar zxvf aup.tar.gz
+\end{verbatim}
+Command line editing may appear archaic and tedious to you at first, and in all honesty, it probably is.  But some measures have been taken to make life a little easier: command line completion, command line editing, and (in general) short command names.
+
+The command spewed a whole lot of output: it is the list of files that were in the archive, and have now been extracted.  (It was the |v| in |zxvf| that caused the file names to be shown in the output).  How many files?  Well, I don't know, but we can find out.  
+\begin{Exercise}
+  Orientation.
+  \begin{Exercise}
+    Browse around the file structure using |ls| and |cd| commands.  
+    \Question{How many levels ``deep'' can you go by |cd|-ing into |aup|?  Don't forget to ``|cd ..|'' your way up to the |ucu| directory afterwards.}
+    \Question{How many cohorts are there?}
+    \Question{Give a rough estimate of how many students have been recorded, by looking at the file names.}
+  \end{Exercise}
+\end{Exercise}
+
+\section{Making some sense of this data}
+\label{sec:making-some-sense}
+
+Now suppose that you start a new job and your predecessor made all the recordings and left you with this mess.  How could you go about this?  First go back to where you started by |cd|-ing to the directory where the archive file was found.  Then do
+\begin{verbatim}
+$ ls aup
+$ ls aup > list.txt
+\end{verbatim}
+This should list the cohort directories.  The second command ``redirects'' the output of the |ls| command to a file called |list.txt|.  This means, we've just created a file, the contents of which has been computed by the computer!  Not a very thrilling file.  We can see that by inspecting its contents in the most basic way that we can:
+\begin{verbatim}
+$ cat list.txt
+\end{verbatim}
+\begin{Exercise}
+  Voil\'a, the same information as in the ls command.  
+  \Question{But there is a slight difference between the plain putput of |ls| and the content as shown by |cat list.txt|.  What is the difference?}
+\end{Exercise}
+
+\subsection{The ``one-line-per-record'' unix philosophy}
+
+Spoiler alert: This paragraph contains the answer to the question above.  The importance about the way the cohort directory names are written to the file |list.txt| is that this file contains \emph{exactly one item per line of text}.  In many ways of dealing with files and such it is very handy if all the information about a particular item is on a single line, and every line has more or less the same format.  For instance, we can now count the number of items in |lists.txt| using |wc| (word count)
+
+\off
+\begin{verbatim}
+$ cat list.txt | wc
+$ wc list.txt
+\end{verbatim}\on
+ 
+Both commands give more/less the same answer: there are 4 lines (and also 4 words, and 34 characters in all in all).  The first form uses a so-called \emph{pipeline}, an extremely important concept in the (unix) command line philosophy.  If you have the feeling that you understand it at the end of this course, and can ven apply it creatively, I think you've achieved a lot.
+
+The idea of the pipeline is that the |cat| command takes the content of |list.txt| and ``puts it into'' a pipe (represented by the symbol ``\off\verb+|+\on'').  The command |wc|, in its turn, reads from that pipeline again, and does its thing, i.e., count the words. 
+
+\begin{Exercise}
+  Pipe versus file name. 
+  \Question{Can you understand why the pipeline version of using |wc| doesn't print the file name |list.txt| to the right of the counts?}
+\end{Exercise}
+
+
+\end{document}
