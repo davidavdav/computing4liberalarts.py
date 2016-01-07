@@ -1,7 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage{fullpage} %% part of the preprint page
 \usepackage{url}
-\usepackage{exercise}
+\usepackage[lastexercise]{exercise}
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{verbatim}
@@ -11,6 +11,8 @@
 \renewcommand\ExerciseHeader{\noindent\textbf{\ExerciseName~\ExerciseHeaderNB} ---}
 \newenvironment{exercise}{\csname shaded*\endcsname \Exercise} {\endExercise\csname endshaded*\endcsname}
 \definecolor{shadecolor}{gray}{0.95}
+\definecolor{answercolor}{rgb}{0.9,0.9,1}
+\newenvironment{answer}{\def\FrameCommand{\colorbox{answercolor}}\MakeFramed{\advance\hsize-\width\FrameRestore}}{\endMakeFramed}
 
 \def\fig#1{Fig.~\ref{fig:#1}}
 \def\sec#1{Section~\ref{sec:#1}}
@@ -30,6 +32,7 @@
 \def\off{\catcode`\|=12}
 \def\on{\catcode`\|=\active}
 
+\def\pipe{\texttt{\char`\|}}
 \catcode`\|=\active
 \def|#1|{\ifmmode\hbox{\texttt{#1}}\else\texttt{#1}\fi}
 \def\<#1>{\ifmmode \langle\hbox{\textrm{\textit{#1}}}\rangle\else$\langle\hbox{\textrm{\textit{#1}}}\rangle$\fi}
@@ -42,7 +45,7 @@
 
 \title{Assignments for shell commands: The ``UCU accent'' data.}
 \author{David van Leeuwen}
-\date{6 jan 2016}
+\date{5 jan 2016}
 
 \begin{document}
 
@@ -50,7 +53,7 @@
 
 \section{Introduction}
 
-The University College Utrecht (UCU) Accents project is a longitudinal study in accent convergence and accommodation in speech amongst students at UCU.  It involves the recording of speech from students at five different moments during their three-year undergraduate degree: at the very beginning in the first semester, and in the 2nd, 3rd, 4th and 6th semester.  UCU students originate from all over the world, but a significant fraction of about 60\,\% is Dutch.  The language spoken at the campus is English, both during and after classes.  
+ University College Utrecht (UCU) Accents project is a longitudinal study in accent convergence and accommodation in speech amongst students at UCU.  It involves the recording of speech from students at five different moments during their three-year undergraduate degree: at the very beginning in the first semester, and in the 2nd, 3rd, 4th and 6th semester.  UCU students originate from all over the world, but a significant fraction of about 60\,\% is Dutch.  The language spoken at the campus is English, both during and after classes.  
 The premiss of the project is that the students, during their stay at UCU, gradually change their accent towards a common `UCU-accent.'
 
 The data is recorded in sessions of about half an hour, and consists of a mix of various types of read texts and spontaneous speech elicited during interviews.  The recordings take place under supervision of a staff member or a student assistant.  With the recordings, metadata is generated.  The metadata and the sound recordings all need to form a consistent database.  The recordings are made according to a protocol, but some data have to be entered manually during the recording process.  Since this involves human actions, there is a certain level of unwanted variability in the way the data is stored on disc, due to small human errors, improvisation when dealing with technical errors and other unexpected events.
@@ -73,7 +76,7 @@ Once you've found this file, you're at the right place.  Navigating without know
 \begin{verbatim}
 ~/ucu$ 
 \end{verbatim}
-In these assignments I'll indicate the prompt---whatever your current working directory is---as |\$|, and you're not supposed to type that character as part of the command. 
+In these assignments I'll indicate the prompt---regardless of what your current working directory is---as |\$|, and you're not supposed to type that character as part of the command. 
 
 Next, we're going to unpack the data.  The name of the file, ending in |.tar.gz|, suggests that it is a GNU-zip compressed (|.gz|) tape-archive (|.tar|). A tape-archive may sound archaic, and guess what: it is.  But the idea of an archive is that it can contain multiple files in a single ``container'' file. 
 \begin{verbatim}
@@ -100,6 +103,27 @@ The command spewed a whole lot of output: it is the list of files that were in t
     \Question{How many cohorts are there?}
     \Question{Give a rough estimate of how many students have been recorded, by looking at the file names.}
 \end{exercise}
+\begin{answer}
+\begin{enumerate}
+    \item You can go 3 levels deep. Some of you wrote four, because you included the |.aup| file as a directory, but of course, it's just a file! 
+    \item You can see four cohort directories, so it's probably safe to assume four cohorts. 
+    \item There could be different answers to this question. Some people looked at the highest subject number, 274, and concluded 274 students. That's about right. Others reckoned about 100 per cohort. Not sure what you'd have been using as your estimate other than the fact that each new cohort began with a new "hundred". Interestingly, some of you assumed that if there was an s274f, there would be an s274m, and so you estimated 548\dots\ but actually that wasn't the naming convention. Interesting how we assume stuff, isn't it?
+\end{enumerate}
+
+\end{answer}
+
+\subsection{Handing in of the assignments}
+
+In order to complete the assignments, you should execute all commands in the text, as well as carry out all exercises.  For the exercises up to \ref{ex:last-simple}, all we need is a short answer, something like:
+\begin{verbatim}
+1.3 A whole lot, more than I expected. 
+\end{verbatim}
+However, starting from Exercise~\ref{ex:move-ok}, we want more detail.  We would like to have
+\begin{itemize}
+\item The actual commands you used to arrive at the answer.  Please use a |typewriter type| font for these commands, and start each command on a new line.  
+\item A descriptive answer of the result---this could be something like ``I checked if there were any new files, and all looks OK''.  
+\end{itemize}
+Hand in your assignment digitally in PDF format or in a plain-text email (other formats will not accepted), and include your name and you login name for \url{ucu.strapps.nl} in the document. 
 
 \section{Making some sense of this data}
 \label{sec:making-some-sense}
@@ -115,8 +139,12 @@ $ cat list.txt
 \end{verbatim}
 \begin{exercise}
   Voil\'a, the same information as in the |ls| command.  
-  \Question{But there is a slight difference between the plain putput of |ls| and the content as shown by |cat list.txt|.  What is the difference?}
+  \Question{But there is a slight difference between the plain output of |ls| and the content as shown by |cat list.txt|.  What is the difference?}
 \end{exercise}
+
+\begin{answer}
+  With |ls|, you are shown multiple files per line vs. one file per line with |cat| 
+\end{answer}
 
 \subsection{The ``one-line-per-record'' unix philosophy}
 
@@ -129,13 +157,20 @@ $ wc list.txt
  
 Both commands give more/less the same answer: there are 4 lines (and also 4 words, and 34 characters in all).  The first form uses a so-called \emph{pipeline}, an extremely important concept in the (unix) command line philosophy.  If you have the feeling that you understand it at the end of this course, and can apply it creatively, I think the course is a success.
 
-The idea of the pipeline is that the |cat| (``concatenate'') command takes the content of |list.txt| and ``puts it into'' a pipe (represented by the symbol ``\texttt{\char`\|}'').  The command |wc|, in turn, reads from that pipeline again, and does its thing, i.e., count the words. 
+The idea of the pipeline is that the |cat| (``concatenate'') command takes the content of |list.txt| and ``puts it into'' a pipe (represented by the symbol ``\pipe'').  The command |wc|, in turn, reads from that pipeline again, and does its thing, i.e., count the words. 
 
 \begin{exercise}
   The unix pipeline
   \Question{When called as ``|wc list.txt'|'', |wc| prints the file name |list.txt| to the right of the (lines, words, characters) counts.   Explain why |wc| doesn't print the file name in the pipeline version of using |wc|.}
   \Question{How many items are there in the directory |aup/cohort1|?  Can you get to the answer \emph{without} using a file like |list.txt|?}
 \end{exercise}
+
+\begin{answer}
+\begin{enumerate}
+    \item When |wc| is to the right of ``\pipe'', it has no access to the file name |lists.txt|.  All it gets it the content of the file.  Otherwise, when it's used with a file name, it does show the file name.
+    \item |wc| shows us that there are 134 items. You could do this by something like |ls aup/cohort1 \pipe wc|. In that way, you don't have to use a list.
+\end{enumerate}
+\end{answer}
 
 Next we're going to work with \emph{all} |.aup| files.  With |cd|, |ls| and a redirect (``|>|'') we can get lists of files and directories, but that would still be a bit unstructured.  We'd like to have a complete list all |.aup| files.  There is a command that will just do that:
 \begin{verbatim}
@@ -152,17 +187,25 @@ The command |find| can find files on many more criteria than just the file name,
 \begin{exercise}
   Working with |find| and |less|.
   \Question{Run the find command again, but save the output in a file called |auplist.txt|.  How many files are there?}
-\end{exercise}
-View the contents non-destructively by typing
+\Question{View the contents non-destructively by typing
 \begin{verbatim}
 $ less auplist.txt  
 \end{verbatim}
-You're running a program called ``less'' now.  It is still running!  You can move down the contents of a file by pressing \<space>, you can move back up by pressing `|b|'.  This way, you can inspect the list without accidentally changing it, which \emph{could} happen if you'd used an editor.  `Less' can do many more things, but right now, the most important thing to know is that you can tell it to quit by pressing `|q|'.
+  You're running a program called ``less'' now.  It is still running!  You can move down the contents of a file by pressing \<space>, you can move back up by pressing `|b|'.  This way, you can inspect the list without accidentally changing it, which \emph{could} happen if you'd used an editor.  `Less' can do many more things, but right now, the most important thing to know is that you can tell it to quit by pressing `|q|'.}
+\end{exercise}
+
+\begin{answer}
+\begin{enumerate}
+    \item There are 964 files.
+    \item as a reminder for the key-strokes while using |less|:
+\end{enumerate}
+\end{answer}
 \begin{explain}
-  \item[\<space>] move forward a `page' (the size of your terminal)
-  \item[|b|] move backward a page
-  \item[|q|] quit, and return to the shell prompt |\$|
-\end{explain}
+\item[\<space>] move forward a `page' (the size of your terminal)
+\item[|b|] move backward a page
+\item[|q|] quit, and return to the shell prompt |\$|
+\end{explain}   
+
 In order to get used to the unix pipeline idea, here are two alternative ways of inspecting all the |.aup| files:
 \begin{verbatim}
 $ cat auplist.txt | less
@@ -174,9 +217,13 @@ $ find aup -name '*.aup' | less
   \Question{Can you understand the difference in \emph{what actually happens} between the two commands?}
 \end{exercise}
 
+\begin{answer}
+The commands produce the same information. The file |auplist.txt| contains the same information that is output by |find aup -name '*.aup'|. The difference in what actually happens is that the first command sends the contents of a file containing the |.aup| files to the pipe, and the second one uses the command |find| to actually look for the |.aup| files and when it's found them, it sends that information to the pipe.
+\end{answer}
+
 \subsection{Simple line-selection tricks}
 
-Now that we have all the |.aup| files listed in the file |auplist.txt|, we can run some quick checks.  A program that comes in handy now is |grep|.  Even though in normal English this is not a word, computer scientists now use the word `grep' for `quickly making a selection from a list'.  `Grep' can select lines according to a pattern.  It works best when operating inside a unix pipeline.  Suppose we want to see files that have |cohort1| in their path.  Typical usages then is:
+Now that we have all the |.aup| files listed in the file |auplist.txt|, we can run some quick checks.  A program that comes in handy now is |grep|.  Computer scientists nowadays use the word `grep' for `quickly making a selection from a list'.  `Grep' can select lines according to a pattern.  It works best when operating inside a unix pipeline.  Suppose we want to see files that have |cohort1| in their path.  Typical usages then is:
 \begin{verbatim}
 $ cat auplist.txt | grep cohort1 > cohort1.list
 $ cat auplist.txt | grep cohort1 | less
@@ -192,8 +239,17 @@ Try these commands.  Remember, a proper shell like |bash| has a command-line edi
   \Question{If you inspect the output of the |grep| above, you see that more files than just cohort1 were selected.  Improve the pattern.}
   \Question{How many aupfiles are there in cohort3?}
   \Question{How many aupfiles are associated, apparently, with a humanities major (a 3-letter major code is sometimes encoded in the files)?}
-  \Question{You can put multiple grep commands in the same command line, just join the statements with the pipe-symbol ``\texttt{\char`\|}''.  How many humanities majors were there in cohort3?}
+  \Question{You can put multiple grep commands in the same command line, just join the statements with the pipe-symbol ``\pipe''.  How many humanities majors were there in cohort3?}
 \end{exercise}
+
+\begin{answer}
+\begin{enumerate}
+    \item Adding a directory-marking forward slash will prevent cohort1.5 from being selected:  |cohort1/|
+    \item 320
+    \item 63
+    \item 6
+\end{enumerate}
+\end{answer}
 
 \subsection{An introduction to regular expressions}
 
@@ -204,6 +260,11 @@ Suppose we want to have a quick breakdown according to sex---we just need to loo
   Too trivial
   \Question{Explain why grepping for |m| or |f| is probably a bad idea.}
 \end{exercise}
+
+\begin{answer}
+  The chances are high that just an |m| or |f| will match somewhere else in the line, for example, where a humanities major is indicated.
+\end{answer}
+
 The trick now is to constrain the match to something that is specific enough, and still exactly matches all relevant file names.  This is where the \emph{regular expression} comes in:
 \begin{verbatim}
 $ cat auplist.txt | grep s...m | wc
@@ -212,12 +273,19 @@ We've made the search pattern a little more specific.  The pattern |s...m| says:
 
 The |.| matches \emph{any} character, but it should be exactly one character.  Instead of just \emph{any}, it is possible to specify a group of characters, e.g., '|[ace]|' (either an |a|, |c|, or |e|), or a range like |[0-9]|.  
 \begin{exercise}
-  The |.aup| filenames follow a further convention, that after the regular name the `round' is indicated---|1| for the first round (September after arrival at UCU), |2| at the end of the first year, etc. 
-  \Question{How many |.aup| files match an explicit first round?}
+  The |.aup| filenames follow a further convention, that after the subject number and sex the `round' is indicated---|1| for the first round (September after arrival at UCU), |2| at the end of the first year, etc. 
+  \Question{How many |.aup| files match an explicit first round? Remember allways to check the output with |less| before you try |wc|.}
   \Question{How many |.aup| files were recorded at the end of an academic year?}
 \end{exercise}
 
-You will have noticed that there appear to be very few aupfiles recorded in the first round.  That can't be right.  This is the result of another brilliant strike of shifting insight: in the second round, we realized we had not taken the round number into account in the file name, all first round recordings were make \emph{without} an explicit round-number in the file name. 
+\begin{answer}
+  \begin{enumerate}
+      \item There are 9 files explicitly matching a first round. This means that the round number 1 was actually stated in the filename! Many of you had more than this as your answer, but you probably included files with no actual round number.
+      \item There were 359 files recorded at the end of an academic year. Many of you interpreted this question as the number recorded at the end of \emph{the first} academic year. Not a problem really, as long as you were able to find the files and use wc to see how many there were.
+  \end{enumerate}
+\end{answer}
+
+You will have noticed that there appear to be very few aupfiles recorded in the first round.  That can't be right.  This is the result of another brilliant strike of shifting insight: in the second round, we realized we had not taken the round number into account in the file name, all first round recordings were made \emph{without} an explicit round-number in the file name. 
 
 So how can we select the files without a round-number?  There are many ways to do this, but one is to \emph{negate} the matching condition in |grep|: select any line that \emph{doesn't match} a particular pattern.  Grep makes this possible with a so-called \emph{command line option} |-v|:
 \begin{verbatim}
@@ -230,9 +298,19 @@ $ cat auplist.txt | grep -v '[1-5]\.aup' | less
 \end{explain}
 Now inspect the output of the grep filter.  It is almost perfect, but if you look carefully, you'll notice a few irregular file names.  It is just like real life---weird stuff happens.  
 \begin{exercise}
-Backslashes and Escapes.  Often programming languages use symbols like |*| and \texttt{\char`\|} to mean something special.  But then when we need to address these symbols themselves, and not their special meaning, we need to \emph{escape} their special meaning by prepending them with, yet another, special symbol ``\texttt{\char`\\}''.  This includes \texttt{\char`\\} itself, so that we need to address that \emph{single} character as ``\texttt{\char`\\\char`\\}''.
+Backslashes and Escapes.  Often programming languages use symbols like |*| and \pipe\ to mean something special.  But then when we need to address these symbols themselves, and not their special meaning, we need to \emph{escape} their special meaning by prepending them with, yet another, special symbol ``\texttt{\char`\\}''.  This includes \texttt{\char`\\} itself, so that we need to address that \emph{single} character as ``\texttt{\char`\\\char`\\}''.
   \Question{Explain why, from a programming perspective, it is a bad idea to have chosen \texttt{\char`\\} as a directory separator in DOS (and later Windows), rather than the more common |/|.}
 \end{exercise}
+
+\begin{answer}
+  You'd have to write two backslashes for every directory separator---not handy! 
+\end{answer}
+
+\begin{framed}
+  You are now finished with the first session.  Lunch time!
+\end{framed}
+
+\pagebreak
 
 \section{Moving stuff in place}
 
@@ -248,7 +326,7 @@ But don't worry---this is just a playground, we'll always have the archive |aup.
 We'll set as our goal that the final directory structure looks like
 \begin{equation}
   \label{eq:1}
-  |aup/cohort|\<cohort>|/s|\<number>|/s|\<number>\<sex>\<round>|.aup|
+  |aup/cohort|\<cohort>|/s|\<number>\<sex>|/s|\<number>\<sex>\<round>|.aup|
 \end{equation}
 where \<number> is a 3-digit sequence number of the student, \<sex> is |m| or |f|, and \<cohort> and \<round> are single digit numbers, starting from 1.  
 
@@ -273,23 +351,46 @@ $ mv aup old
 Now look around again (with |ls|, |cd|, or even |find| and |less|).  Everything should look familiar. 
 \begin{exercise}
   This was too easy. 
-  \Question{We used |mv| to rename a directory.  Search the web why the tool is called |mv|.}
+  \Question{We used |mv| to rename a directory.  Search the web to read about |mv|.  What English word does it represent?}
 \end{exercise}
+
+\begin{answer}
+  \emph{Move}, of course!
+\end{answer}
 
 \subsection{Making the directory structure skeleton}
 
 According to our stated goal, the ``deepest directory path'' in our final structure should start with ``|aup|'' and end with |s|\<number> followed by |m| or |f|.  We're going to teach you one trick: how to select a specific part of a line from a list.  Consider the command line
 \begin{verbatim}
 cat auplist.txt | cut -c 13-17 | less
+cat auplist.txt | cut -c 1-2,4,13-17 | less
 \end{verbatim}
-The |cut| command cuts out the characters numbered 13 through 17 on every line.  
+The first |cut| command cuts out the characters numbered 13 through 17 on every line.  The second combines various parts of the line. 
 \begin{exercise}
-  Building up to a perfect list.  We're going to use the technique of slowly building a complicated command line, adding commands to the pipe one at the time, and always ending in |less|.  The arrow-keys are your friend.  
+  Building up to a perfect list.  We're going to use the technique of slowly building a complicated command line, adding commands to the pipe one at the time, and always ending in |less|.  The arrow-keys are your friends.  
   \Question{Build a pipeline (three commands, ending in |less|) that selects aupfiles from only cohorts 1, 2 and 3 (i.e., does not select cohort1.5).}
   \Question{Now select only the characters that form the ``deepest directory path'' discussed above.  Also count the entries.}
   \Question{Expand the pipeline by adding ``|sort -u|''.  This makes the target directories occur only once.  How many did you end up with?}
   \Question{Finally, if you are happy with the output you see in |less|, change the command line once more by redirecting the output to a file called |directories.txt|.}
 \end{exercise}
+
+\begin{answer}
+  \begin{enumerate}
+  \item 
+\begin{verbatim}
+cat auplist.txt | grep cohort[1-3]/ | less
+\end{verbatim}
+\item 961
+\begin{verbatim}
+cat auplist.txt | grep cohort[1-3]/ | cut -c 1-17 | wc
+\end{verbatim}
+\item 227 
+\begin{verbatim}
+cat auplist.txt | grep cohort[1-3]/ | cut -c 1-17 | sort -u | wc
+\end{verbatim}
+\end{enumerate}
+\end{answer}
+
 Now check, once more, that the content of |directories.txt| looks like the structure we have specified: entries should start with |aup|\dots and end with \dots|m| or \dots|f|, and consist of three parts separated by |/|. 
 
 When this is all done, we're ready to produce the skeleton.  This is a complicated command so I'll just give it here (but don't type the |\$| and the |>| at the beginning of the lines shown: they represent the prompt from the shell)
@@ -312,10 +413,15 @@ This was a very complicated command.  It involves actual programming in the shel
 \begin{exercise}
   The long list of |mkdir -p| commands weren't actually executed---they were just printed on the terminal. 
   \Question{Call back this complicated command by pressing the up-arrow key once.  Compare what you see with what you typed.  What is the difference?}
-  \Question{Now, add ``\texttt{\char`\|\ less}'' to the end of the command, and execute this.  Browse through the output, and then quit the program |less|}
+  \Question{Now, add ``\pipe| less|'' to the end of the command, and execute this.  Browse through the output, and then quit the program |less|}
   \Question{If you're satisfied that the directories at the end of each |mkdir -p| command are what they are supposed to be, we're ready to \emph{actually} make directories.  Retrieve the previous command line, and change |less| to |bash|, and execute.}
   \Question{Check with |find aup| that all the directories were created, indeed.}
 \end{exercise}
+
+\begin{answer}
+  When you were writing the |while read d; do ... ; done| construction one line at a time, you see that the prompt turns from a |\$| to a |>|. That means that the shell is waiting for more commands, until this construction is completed.  However, when you use the up-arrow to recall the command, the whole construction is shown on one line, and semicolons are placed where you would otherwise have pressed return.
+\end{answer}
+
 The trick that actually created the directories was to `feed' the |mkdir| commands into |bash|---this is the same program that interprets and executes your commands in these assignments.  Instead of taking instructions from the keyboard, this second |bash| command took instructions from the pipeline, namely those carefully constructed commands `make a directory named \dots\ and all of its parents'.  
 
 This was a long section, and admittedly complicated.  There are slightly less complicated ways of creating the directories in |directories.txt| (see below), but the one I showed is a bit more general (it will work for a list of a million directories just as easily) and careful (only when you're \emph{really} sure you go ahead and execute stuff). 
@@ -328,11 +434,11 @@ $ rm -rf aup
 \end{verbatim}
 \begin{explain}
   \item [|rm|] the command: remove.  Usually invoked for just one or a few files
-  \item [|-r|] option: recursively.  If any of the items encountered is a directory, |cd| to this directory and recorsively remove all files and directories in there. 
+  \item [|-r|] option: recursively.  If any of the items encountered is a directory, |cd| to this directory and recursively remove all files and directories in there. 
   \item [|f|] option (because glued to |-r| in this example): force.  Don't ask any questions ``are you sure?'', just do it!
   \item [|aup|] the directory that we want to remove
 \end{explain}
-The reason that you can't just say ``|rm aup|'' is that it is full of stuff---if you would remove the directory |aup| but not the contents, then these contents would hang in the air and the filesystem's integrity would be violated: all files and directories must have a place on the filesystem.  
+The reason that you can't just say ``|rm aup|'' is that |aup| is full of stuff---if you would remove the directory |aup| but not the contents, then these contents would hang in the air and the filesystem's integrity would be violated: all files and directories must have a place on the filesystem.  
 
 \subsubsection{Alternative ways of making the skeleton}
 
@@ -350,7 +456,7 @@ What the |xargs| command actually does, is read all the lines from the pipeline,
   |mkdir -p aup/cohort1/s001f aup/cohort1/s002m|\ \ldots\ |aup/cohort3/s274f|
 \end{equation}
 
-A slightly different variant to the above is the use of ``back quotes'', the ``|`|'' character that you often have to look for on the keyboard: it is usually snuggled away somewhere at the periphery, as if the designers of the keyboard forgot about it at first an had to fix that later.
+A slightly different variant to the above is the use of ``back quotes'', the ``|`|'' character that you often have to look for on the keyboard: it is usually snuggled away somewhere at the periphery, as if the designers of the keyboard forgot about it at first and had to fix that later.
 \begin{verbatim}
 $ mkdir -p `cat directories.txt`
 \end{verbatim}
@@ -366,6 +472,7 @@ For moving files about, we can use the |mv| again (see \sec{rename}), in a sligh
 $ mv list.txt old/
 \end{verbatim}
 \begin{exercise}
+  \label{ex:last-simple}
   Moving back and forth. 
   \Question{Check that the file |list.txt| has indeed moved its location}
   \Question{Make sure you are in the |ucu| directory again, and move the file now from |old/| to |aup/|}
@@ -373,8 +480,13 @@ $ mv list.txt old/
 \end{exercise}
 
 \subsubsection{Files already matching the desired naming}
-
+Please note, that for handing in the assignments, you need to specify for the exercises from here onwards:
+\begin{itemize}
+\item The actual commands you used to arrive at the answer.  Please use a |typewriter type| font for these commands, and start each command on a new line.  
+\item A descriptive answer of the result.
+\end{itemize}
 \begin{exercise}
+  \label{ex:move-ok}
   Let's start moving files into place that were already OK. 
   \Question{Find aupfiles in |old| that match the desired naming convention (apart from the |aup/| at the beginning, of course), see \eq{1}.  Use |find| and |grep|, and view the result in |less|.  If you are satisfied with the selection, save the list in a file called ``|a|''.  How many lines are we talking about?}
   \Question{Generate a list of corresponding destination files by changing the |old| into |aup|, you can do this using the stream-editor |sed|, that operates perfectly on a pipeline.  The prototypical usage is as 
@@ -389,6 +501,31 @@ $ paste a b
     (use |less| for inspection, of course!), and then build a command line that will print ``|mv |\<source>| |\<destination>'' lines very much the way we did for creating the directories.  If you're happy, and you know it, clap your hands.  Then execute the major move.}
   \Question{Find the aupfiles in |aup| and count them. Check that everything worked out fine.} 
 \end{exercise}
+
+\begin{answer}
+  \begin{enumerate}
+  \item We found 383 of these. Here's what we did:
+\begin{verbatim}
+find old -name '*.aup' | grep cohort[1-3]/s...[mf]/s...[mf][1-5]\.aup > a
+\end{verbatim}
+  \item
+\begin{verbatim}
+cat a | sed 's/old/aup/' > b
+\end{verbatim}
+  \item
+\begin{verbatim}
+paste a b | while read line; do echo mv $line; done | less
+\end{verbatim}
+  \item
+\begin{verbatim}
+paste a b | while read line; do echo mv $line; done | bash
+\end{verbatim}
+  \item
+\begin{verbatim}
+find aup -name \*.aup | wc
+\end{verbatim}
+  \end{enumerate}
+\end{answer}
 At this stage, it appears that we're right where we started aver having unpacked the |.tar.gz| file.  But this time we're confident that \emph{all files} in |aup/| are correct.  
 
 \subsubsection{Removing the major from the file names, regular rounds}
@@ -396,12 +533,35 @@ At this stage, it appears that we're right where we started aver having unpacked
 \begin{exercise}
   We're now going to put the aupfiles in place that still had their major encoded in them.  
   \Question{Start with finding the aupfiles in |old| that, apart from the 3-letter major encoding, follow the desired naming.  How many do you find?  Save in ``|c|''}
-  \Question{Starting from |c|, craft a pipeline that generates the desired output.  Save this in |d|.}
+  \Question{Starting from |c|, craft a pipeline that generates the desired output, as in \eq{1} above.  Don't forget the old/aup change! Save this in |d|.}
   \Question{Find out if there is an option for |mv| that will prevent overwriting if the destination file already exists.  Standard unix tools have command-line documentation ``|man |\<command>''.}
   \Question{Craft the pipeline that will produce the correct |mv| commands from |c| and |d|.  Check, and if everything looks fine, execute.}
-  \Question{Recall the command line that produced |c|, and see if there are any files left---save in |c.dup|---these are the duplicates.}
+  \Question{Recall the command line that produced |c|, and see how many files left after the move---save in |c.dup|---these are the duplicates.}
 \end{exercise}
-  
+
+\begin{answer}
+  \begin{enumerate}
+  \item We found 355 of these. Again, this is what we did:
+\begin{verbatim}
+find old -name '*.aup' | grep cohort[1-3]/s...[mf].../s...[mf]...[1-5]\.aup > c
+\end{verbatim}
+  \item 
+\begin{verbatim}
+cat c | cut -c 1-17,21-26,30- | sed 's/old/aup/' > d
+\end{verbatim}
+    \item |mv -n|
+    \item
+\begin{verbatim}
+paste c d | while read line; do echo mv -n $line; done | bash
+\end{verbatim}
+    \item 5
+\begin{verbatim}
+find old -name '*.aup' | grep cohort[1-3]/s...[mf].../s...[mf]...[1-5]\.aup > c.dup
+\end{verbatim}
+  \end{enumerate}
+  You may have arrived at your answer via a different route. If you did, and you got more or less the same answer as us, I wonder how you think your solution compares to ours. It's good to know that there's more than one way to skin a cat! 
+\end{answer}
+
 \subsubsection{Removing the major from the file names, forgotten round}
 \begin{exercise}
   We're getting to the harder cases now.  These are the aupfiles with the student's major encoded, but without a \<round> number.  We need to add that as round 1.
@@ -411,6 +571,24 @@ At this stage, it appears that we're right where we started aver having unpacked
   \Question{Look at what files are left in |old|.  What is the pattern that appears most?} %% 31x major in dir but not in file
 \end{exercise}
 
+\begin{answer}
+  \begin{enumerate}
+  \item There were 163 of these files.
+\begin{verbatim}
+find old -name '*.aup' | grep cohort[1-3]/s...[mf].../s...[mf]...\.aup > e
+\end{verbatim}
+  \item
+\begin{verbatim}
+cat e | cut -c 1-17,21-26,30- | sed 's/\.aup/1.aup/' | sed 's/old/aup/' > f
+\end{verbatim}
+  \item In |aup| there were 893 and in |old| there were 71 left.
+\begin{verbatim}
+paste e f | while read line; do echo mv -n $line; done | bash
+\end{verbatim}
+  \item Files with the major in the directory name but not in the file name
+  \end{enumerate}
+\end{answer}
+
 \section{Bonus question}
 \label{sec:bonus-question}
 
@@ -419,6 +597,12 @@ At this stage, it appears that we're right where we started aver having unpacked
   \Question{How many students received the \euro10,-- bonus?} %% 113
 \end{exercise}
 
+\begin{answer}
+  From 227 participants, there were 113 who got the extra tenner.
+\begin{verbatim}
+find aup -type d | while read d; do ls $d | wc; done | awk '$1==5' | wc
+\end{verbatim}
+\end{answer}
 \section{Conclusions}
 
 In these assignments you have worked with some real data collected during the UCU accents projects.  You have seen how you can gain some insights in how the structure of the raw data files is stored on disc by utilizing some basic shell commands.  You have practiced building up quite complicated unix pipelines, and in doing so you have got to know commands like |cat|, |find|, |less|, |grep|, |cut|, |paste|, |sort|, |mv|, |rm|, |mkdir|, |xargs| and |sed| a little.  
