@@ -22,25 +22,28 @@ def read_header(file="h.txt"):
 
 def process_csv(file, header):
     out=[]
-    with open(file) as fd:
-        reader = csv.reader(fd)
-        for nr, row in enumerate(reader):
-            logging.debug("%d fields in line %d", len(row), nr)
-            d = dict()
-            out.append(d)
-            for i, field in enumerate(row):
-                if field != "NULL":
-                    if floatre.match(field):
-                        d[header[i]] = float(field)
-                    elif intre.match(field):
-                        d[header[i]] = int(field)
-                    else:
-                        d[header[i]] = field.decode("utf-8")
+    stdin = file == "-"
+    fd = sys.stdin if stdin else open(file)
+    reader = csv.reader(fd)
+    for nr, row in enumerate(reader):
+        logging.debug("%d fields in line %d", len(row), nr)
+        d = dict()
+        out.append(d)
+        for i, field in enumerate(row):
+            if field != "NULL":
+                if floatre.match(field):
+                    d[header[i]] = float(field)
+                elif intre.match(field):
+                    d[header[i]] = int(field)
+                else:
+                    d[header[i]] = field.decode("utf-8")
+    if not stdin:
+        fd.close()
     return out
 
 if __name__ == "__main__":
     p =argparse.ArgumentParser()
-    p.add_argument("raw", nargs="+")
+    p.add_argument("raw", nargs="*", default=["-"])
     p.add_argument("--header", type=str, default="h.txt")
     args = p.parse_args()
     logging.basicConfig(level=logging.INFO)
