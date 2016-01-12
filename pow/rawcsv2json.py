@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # (c) 2016 David A. van Leeuwen
 
 ## This file converts a "raw" tye of csv file from the PoW database into a json.
@@ -36,7 +36,7 @@ def process_csv(file, header):
                 elif intre.match(field):
                     d[header[i]] = int(field)
                 else:
-                    d[header[i]] = field.decode("utf-8")
+                    d[header[i]] = field
     if not stdin:
         fd.close()
     return out
@@ -45,11 +45,13 @@ if __name__ == "__main__":
     p =argparse.ArgumentParser()
     p.add_argument("raw", nargs="*", default=["-"])
     p.add_argument("--header", type=str, default="h.txt")
+    p.add_argument("--debug", action="store_true")
     args = p.parse_args()
-    logging.basicConfig(level=logging.INFO)
+    if args.debug:
+        logging.basicConfig(level=logging.INFO)
     header = read_header(args.header)
     out = []
     for file in args.raw:
         out += process_csv(file, header)
-    print json.dumps(out, indent=4, ensure_ascii=False).encode("utf-8")
+    print(json.dumps(out, indent=4, ensure_ascii=False))
 
