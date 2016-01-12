@@ -8,7 +8,7 @@
 ## - "NULL" entries are simply left out
 ## - numbers are interpreted as numbers, not strings
 
-import argparse, json, logging, csv, re, sys
+import argparse, json, logging, csv, re, sys, codecs
 
 floatre = re.compile("^\d+\.\d+$")
 intre = re.compile("^\d+$")
@@ -23,7 +23,7 @@ def read_header(file="h.txt"):
 def process_csv(file, header):
     out=[]
     stdin = file == "-"
-    fd = sys.stdin if stdin else open(file)
+    fd = sys.stdin if stdin else codecs.open(file, "r", "UTF-8")
     reader = csv.reader(fd)
     for nr, row in enumerate(reader):
         logging.debug("%d fields in line %d", len(row), nr)
