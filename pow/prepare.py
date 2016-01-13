@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# (c) 2016 David A. van Leeuwen
 
 ## Read the wikipedia person.csv database, and split by birth year (if found)
 ## Reading everything into memory, first, for speed efficiency reasons, does not work.

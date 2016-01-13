@@ -1,4 +1,6 @@
 ## solution for miniproject shootings
+# (c) 2016 David A. van Leeuwen
+
 read.shootings <- function(file="counted.csv") {
     x <- read.csv(file)
     x

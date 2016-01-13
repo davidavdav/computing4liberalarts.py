@@ -54,6 +54,7 @@ if __name__ == "__main__":
     header = read_header(args.header)
     out = []
     for file in args.raw:
-        out += process_csv(file, header)
-    print(json.dumps(out, indent=4, ensure_ascii=False))
-
+        entries = process_csv(file, header)
+        for e in entries:
+            for k in e:
+                print(k)
